@@ -9,7 +9,6 @@ export const getUsers = async(req, res) => {
     }
 }
 
-
 export const getUserById = async(req, res) => {
     try {
         const response = await User.findOne({
@@ -23,30 +22,32 @@ export const getUserById = async(req, res) => {
     }
 }
 
-export const createUser = async(req, res) => {
+export const saveUser = async (req, res) => {
+    const user = new User(req.body);
     try {
-        await User.create(req.body);
-        res.status(201).json({msg: "User Created"});
+        const savedUser = await user.save();
+        res.status(201).json(savedUser);
     } catch (error) {
-        console.log(error.message);
+        res.status(400).json({msg: error.message});
     }
 }
 
-export const updateUser = async(req, res) =>{
+
+export const editUser = async (req, res) => {
+    const cekId = await User.findByPk(req.params.id);
+    if(!cekId) return res.status(404).json({message: "Data tidak ditemukan"});
     try {
-        await User.update(req.body,{
-            where:{
-                booking_id: req.params.id
-            }
-        });
-        res.status(200).json({msg: "User Updated"});
+        editedUser = await User.updateOne({booking_id: req.params.id}, {$set: req});
+        res.status(200).json(editedUser);
     } catch (error) {
-        console.log(error.message);
+        res.status(400).json({message: error.message});
     }
 }
 
 
 export const deleteUser = async(req, res) =>{
+    const cekId = await User.findByPk(req.params.id);
+    if(!cekId) return res.status(404).json({message: "Data tidak ditemukan"});
     try {
         await User.destroy({
             where:{
@@ -58,5 +59,3 @@ export const deleteUser = async(req, res) =>{
         console.log(error.message);
     }
 }
-
-

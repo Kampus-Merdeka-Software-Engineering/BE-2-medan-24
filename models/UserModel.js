@@ -27,7 +27,10 @@ const User = db.define("users", {
     },
     specialRequest: {
         type:DataTypes.STRING,
-    }
+    },
+    }, {
+        freezeTableName: true,
+        timestamps: false
 });
 
 export default User;
