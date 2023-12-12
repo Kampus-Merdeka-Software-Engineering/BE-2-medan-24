@@ -20,7 +20,7 @@ const User = db.define("users", {
         type:DataTypes.STRING,
     },
     date: {
-        type:DataTypes.DATE,
+        type:DataTypes.DATEONLY,
     },
     person: {
         type:DataTypes.STRING,
